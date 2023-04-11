@@ -29,7 +29,7 @@ pipeline{
             }
             post {
                 always{
-                    slackeSend channel: '#devops-project',
+                    slackSend channel: '#devops-project',
                     color: 'good',
                     message: "Job is started"
                 }
