@@ -25,7 +25,7 @@ pipeline{
     stages{
         stage('BUILD'){
             steps{
-                sh 'maven -s settings.xml install -DskipTests'
+                sh 'mvn -s settings.xml install -DskipTests'
             }
             post {
                 success {
@@ -37,6 +37,18 @@ pipeline{
         stage('UNIT TEST'){
             steps{
                 sh 'mvn -s settings.xml test'
+            }
+            post {
+                success {
+                    slackSend channel: '#devops-project',
+                    color: 'good',
+                    message: "UNIT TEST IS SUCCESS"
+                }
+                failure {
+                    slackSend channel: '#devops-project',
+                    color: 'danger',
+                    message: "UNIT TEST IS FAILED"
+                }
             }
         }
         stage('INTEGRATION TEST'){
