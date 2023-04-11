@@ -29,9 +29,14 @@ pipeline{
                 }
             }
         }
-        stage('TEST'){
+        stage('UNIT TEST'){
             steps{
                 sh 'mvn -s settings.xml test'
+            }
+        }
+        stage('INTEGRATION TEST'){
+            steps{
+                sh 'mvn -s settings.xml verify -DskipUnitTests'
             }
         }
         stage('CHECKSTYLE ANALYSIS'){
