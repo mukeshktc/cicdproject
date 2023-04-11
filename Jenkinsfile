@@ -31,7 +31,7 @@ pipeline{
                 always{
                     slackSend channel: '#devops-project',
                     color: 'good',
-                    message: "Job is started"
+                    message: "Job is started Job name: ${env.JOB_NAME} build ${env.BUILD_NUMBER} time ${env.BUILD_TIMESTAMP} \n More info at: ${BUILD_URL}"
                 }
             }
         }
@@ -122,7 +122,7 @@ pipeline{
             echo 'slack notifications'
             slackSend channel: '#devops-project',
             color: COLOR_MAP[currentBuild.currentResult],
-            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${BUILD_URL}"
+            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} time ${env.BUILD_TIMESTAMP} \n More info at: ${BUILD_URL}"
         }
     }
 }
