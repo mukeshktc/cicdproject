@@ -23,6 +23,12 @@ pipeline{
         SONAR_SCANNER = 'SONARSCANNER'
     }
     stages{
+        stage('NOTIFICATION TO SLACK'){
+            steps {
+                slackeSend channel: '#devops-project',
+                message: "Job is started"
+            }
+        }
         stage('BUILD'){
             steps{
                 sh 'mvn -s settings.xml install -DskipTests'
