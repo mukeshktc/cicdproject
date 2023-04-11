@@ -25,8 +25,14 @@ pipeline{
     stages{
         stage('NOTIFICATION TO SLACK'){
             steps {
-                slackeSend channel: '#devops-project',
-                message: "Job is started"
+                echo 'Pipeline started'
+            }
+            post {
+                always{
+                    slackeSend channel: '#devops-project',
+                    color: 'good',
+                    message: "Job is started"
+                }
             }
         }
         stage('BUILD'){
