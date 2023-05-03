@@ -21,6 +21,7 @@ pipeline{
         NEXUS_LOGIN = 'nexuslogin'
         SONAR_SERVER = 'SONARSERVER'
         SONAR_SCANNER = 'SONARSCANNER'
+        DOCKER_PASS = credentials('dockerpass')
     }
     stages{
         stage('NOTIFICATION TO SLACK'){
@@ -135,6 +136,7 @@ pipeline{
                         build: "${env.BUILD_ID}",
                         time: "${env.BUILD_TIMESTAMP}",
                         vprofile_version: "vproapp-${env.BUILD_ID}-${env.BUILD_TIMESTAMP}.war"
+                        dockerPass: "${DOCKER_PASS}"
                     ]
                 ])
             }

@@ -1,0 +1,140 @@
+- hosts: appsrvgrp
+  become: true
+  vars:
+    timestamp: "{{ansible_date_time.date}}_{{ansible_date_time.hour}}_{{ansible_date_time.minute}}"
+  tasks:
+## Downloading artifact and docker prerequestie files
+  - name: Download artifact from nexus  
+    get_url: 
+      url: "http://{{USER}}:{{PASS}}@{{nexusip}}:8081/repository/{{reponame}}/{{groupid}}/{{artifactid}}/{{build}}-{{time}}/{{vprofile_version}}"
+      dest: "/tmp/ROOT.war"
+    register: wardeploy  
+    tags:
+    - deploy
+
+  - name:  taking stastics of artifact
+    stat: 
+      path: /tmp/ROOT.war
+    register: artifact_stat  
+    tags:
+    - deploy
+
+  - name:  try and take backup of artifact
+    shell: cp -r ROOT.war old_ROOT.war
+    when: artifact_stat.stat.exists
+    args:
+      chdir: /tmp/
+
+  - name: delete previous docker files
+    file: 
+      path: /tmp/Docker-files
+      state: absent  
+
+  - name: delete previous compose file
+    file: 
+      path: /tmp/compose
+      state: absent  
+
+  - name: copy docker files from ansible server or github source code to remote server
+    copy:
+      src: Docker-files     
+      dest: /tmp/
+
+  - name: copy compose from ansible to remote
+    copy:
+      src: compose
+      dest: /tmp/
+
+## Installing Docker and docker compose
+  - name:  Install aptitute
+    apt:  
+      name: aptitute
+      state: latest
+      update_cache: yes
+
+  - name: Install dependent packages
+    apt:
+      pkg:
+      - apt-transport-https  
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - python3-pip
+      - virtualenv
+      - python3-setuptools
+    state: latest
+    update_cache: yes
+
+  - name: add docker gpg key
+    apt_key:
+      url: "https://download.docker.com/linux/ubuntu/gpg"
+      state: present
+
+  - name: add Docker apt repository
+    apt_repository:
+      repo:  deb https://download.docker.com/linux/ubuntu jammy stable
+      state: present
+
+  - name:  Update apt cache & Install docker engine    
+    apt:  
+      name: docker-ce
+      state: latest
+      update_cache: true
+
+  - name: Install docker module for python
+    pip:
+      name: docker
+
+  - name: install docker compose using pip
+    pip:
+      name: docker-compose
+
+## Building our images and running conatiners from here
+## docker build
+  - name: docker login
+    docker_login:
+      username: mukeshktc
+      password: "{{dockerPass}}"
+
+  - name: Build an tomcat app image
+    community.docker.docker_image:
+      build:
+        path: /tmp/Docker-files/app
+      name: mukeshktc/vproapp
+      tag: V2
+      push: true
+      source: build
+
+  - name: Build db images
+    community.docker.docker_image:
+      build:
+        path: /tmp/Docker-files/db
+      name: mukeshktc/vprodb
+      tag: V2
+      push: true
+      source: build
+
+  - name: build web images
+    community.docker.docker_image:
+      build:
+        path: /tmp/Docker-files/web
+      name: mukeshktc/vproweb
+      tag: V2
+      push: true
+      source: build          
+
+## docker compose
+  - name: docker compose to group our containers in a network
+    community.docker.docker_compose:
+      project_src: /tmp/compose
+      state: present
+
+    
+
+
+      
+          
+        
+
+
+        
