@@ -45,6 +45,12 @@
       src: compose
       dest: /tmp/
 
+  - name: synchronize our ROOT.war with app dockerfile location    
+    synchronize:
+      src: /tmp/ROOT.war
+      dest: /tmp/Docker-files/app/ROOT.war
+    delegate_to: "{{inventory_hostname}}"
+      
 ## Installing Docker and docker compose
   - name:  Install aptitude
     apt:  
