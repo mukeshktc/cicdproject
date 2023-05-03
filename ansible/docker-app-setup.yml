@@ -46,9 +46,9 @@
       dest: /tmp/
 
 ## Installing Docker and docker compose
-  - name:  Install aptitute
+  - name:  Install aptitude
     apt:  
-      name: aptitute
+      name: aptitude
       state: latest
       update_cache: yes
 
