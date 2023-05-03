@@ -135,7 +135,7 @@ pipeline{
                         artifactid: 'vproapp',
                         build: "${env.BUILD_ID}",
                         time: "${env.BUILD_TIMESTAMP}",
-                        vprofile_version: "vproapp-${env.BUILD_ID}-${env.BUILD_TIMESTAMP}.war"
+                        vprofile_version: "vproapp-${env.BUILD_ID}-${env.BUILD_TIMESTAMP}.war",
                         dockerPass: "${DOCKER_PASS}"
                     ]
                 ])
