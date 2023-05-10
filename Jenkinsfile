@@ -117,7 +117,7 @@ pipeline{
                 )
             }
         }
-        stage('Ansible Deploy to Server'){
+        stage('Ansible Deploy to DockerHub'){
             steps{
                 ansiblePlaybook([
                     inventory: 'ansible/inventory',
