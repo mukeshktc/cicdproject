@@ -1,0 +1,7 @@
+- hosts: kubernetes
+  name: app deployment on kubernetes
+  tasks:
+  - name: update vproapp
+    command: kubectl rollout restart deployment.apps/vproapp
+  - name: update vprodb
+    command: kubectl rollout restart deployment.apps/vprodb

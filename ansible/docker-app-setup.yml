@@ -130,10 +130,10 @@
       source: build          
 
 ## docker compose
-  - name: docker compose to group our containers in a network
-    community.docker.docker_compose:
-      project_src: /tmp/compose
-      state: present
+ # - name: docker compose to group our containers in a network
+  #  community.docker.docker_compose:
+   #   project_src: /tmp/compose
+    #  state: present
 
     
 

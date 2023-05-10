@@ -141,6 +141,18 @@ pipeline{
                 ])
             }
         }
+        stage('Ansible Deploy to Kubernetes'){
+            steps{
+                ansiblePlaybook([
+                    inventory: 'ansible/inventory',
+                    playbook: 'ansible/kube.yml',
+                    installation: 'ansible',
+                    colorized: true,
+                    credentialsId: 'kubelogin',
+                    disableHostKeyChecking: true,
+                ])
+            }
+        }
     }
     post {
         always {
