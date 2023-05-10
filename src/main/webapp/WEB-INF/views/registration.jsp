@@ -46,7 +46,7 @@
                         </div>
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                <li><a href="#">TECHNOLOGIES</a></li>
+                                <li><a href="#">TECHNOLOGY</a></li>
                                 <li><a href="#">ABOUT</a></li>
                                 <li><a href="#">BLOG</a></li>
                             </ul>
@@ -101,7 +101,7 @@
             </div>
         </spring:bind>
 
-        <button class="btn btn-custom btn-lg  btn-block" type="submit">SIGN UP</button>
+        <button class="btn btn-custom btn-lg  btn-block" type="submit">CREATE</button>
     </form:form>
 
 </div>
